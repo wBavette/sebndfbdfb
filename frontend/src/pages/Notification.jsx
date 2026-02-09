@@ -27,13 +27,21 @@ const Notification = () => {
           <Send className="w-8 h-8 text-telegram" />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           <h1 className="text-xl sm:text-2xl font-bold text-foreground">
-            Rejoignez notre Telegram
+            Rejoignez notre <span className="text-telegram">Telegram</span>
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Pour accéder au contenu, vous devez d'abord rejoindre notre communauté Telegram.
-          </p>
+          <div className="text-muted-foreground text-sm sm:text-base space-y-3">
+            <p>
+              Pour accéder au contenu, veuillez d'abord <strong className="text-foreground">rejoindre notre communauté Telegram</strong>.
+            </p>
+            <p>
+              Une fois cette étape complétée, revenez sur cette page et cliquez sur « <strong className="text-cyan-400">Continuer vers le stream</strong> ».
+            </p>
+            <p className="text-xs text-muted-foreground/70">
+              Si l'option ne s'affiche pas, ouvrez le site depuis le navigateur <strong className="text-foreground">Safari</strong>.
+            </p>
+          </div>
         </div>
 
         {stream && (

@@ -82,4 +82,4 @@ export const socialLinks = {
   whatsapp: "https://api.whatsapp.com/message/KEYQ6SKITE4SI1?autoload=1&app_absent=0",
 };
 
-export const logoUrl = "https://customer-assets.emergentagent.com/job_cardplayer-ui/artifacts/59bpzxjr_merutv.jpg";
+export const logoUrl = "https://customer-assets.emergentagent.com/job_cardplayer-ui/artifacts/14lhbq4y_merutv-removebg-preview.png";

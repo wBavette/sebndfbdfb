@@ -1,0 +1,130 @@
+import { Tv, Zap, Monitor, Shield, Check } from "lucide-react";
+import { useState } from "react";
+import Navbar from "../components/streaming/Navbar";
+import Footer from "../components/streaming/Footer";
+import { iptvPlans, iptvIncluded, socialLinks } from "../data/mock";
+
+const IPTV = () => {
+  const [selectedPlan, setSelectedPlan] = useState("12mois");
+
+  const features = [
+    { icon: Tv, title: "15 000+ Chaînes", description: "HD et 4K disponibles" },
+    { icon: Zap, title: "Ultra Rapide", description: "Anti-buffering" },
+    { icon: Monitor, title: "Multi-Appareils", description: "TV, mobile, PC" },
+    { icon: Shield, title: "Sécurisé", description: "Support 24/7" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <Navbar />
+
+      <main className="flex-1 px-6 py-12">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-400 rounded-full px-4 py-2 mb-6 animate-pulse-soft">
+              <span>✨</span>
+              <span className="text-sm font-medium">Service IPTV Premium</span>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Le Meilleur de la TV{" "}
+              <span className="text-cyan-400">en Streaming</span>
+            </h1>
+
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Profitez de milliers de chaînes et contenus en haute qualité. Installation simple, support réactif.
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-card border border-border rounded-xl p-6 text-center animate-fade-in-up hover:scale-105 hover:border-cyan-500/50 transition-all duration-300"
+                style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'both' }}
+              >
+                <feature.icon className="w-8 h-8 text-cyan-400 mx-auto mb-3 animate-float" />
+                <h3 className="font-semibold text-foreground mb-1">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Pricing & Features */}
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {/* Plans */}
+            <div className="bg-card border border-border rounded-xl p-6 animate-fade-in-left" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
+              <h2 className="text-xl font-semibold text-foreground mb-6">Nos Forfaits</h2>
+
+              <div className="space-y-3 mb-6">
+                {iptvPlans.map((plan, index) => (
+                  <button
+                    key={plan.id}
+                    onClick={() => setSelectedPlan(plan.id)}
+                    className={`w-full flex items-center justify-between p-4 rounded-lg border transition-all duration-300 hover:scale-[1.02] animate-fade-in ${
+                      selectedPlan === plan.id
+                        ? "bg-primary/10 border-primary shadow-lg shadow-primary/20"
+                        : "bg-muted/50 border-border hover:border-muted-foreground"
+                    }`}
+                    style={{ animationDelay: `${300 + index * 75}ms`, animationFillMode: 'both' }}
+                  >
+                    <span className="font-medium text-foreground">{plan.duration}</span>
+                    <span className="text-xl font-bold text-foreground">{plan.price}</span>
+                  </button>
+                ))}
+              </div>
+
+              <a
+                href={socialLinks.discord}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center bg-gradient-to-r from-cyan-600 to-cyan-500 text-primary-foreground font-semibold py-3 px-6 rounded-lg hover:opacity-90 hover:scale-[1.02] transition-all duration-300 animate-shimmer"
+              >
+                Je m'abonne maintenant
+              </a>
+            </div>
+
+            {/* Included */}
+            <div className="bg-card border border-border rounded-xl p-6 animate-fade-in-right" style={{ animationDelay: '300ms', animationFillMode: 'both' }}>
+              <h2 className="text-xl font-semibold text-foreground mb-6">Inclus dans l'offre</h2>
+
+              <ul className="space-y-4">
+                {iptvIncluded.map((item, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center gap-3 animate-fade-in-up"
+                    style={{ animationDelay: `${400 + index * 100}ms`, animationFillMode: 'both' }}
+                  >
+                    <Check className="w-5 h-5 text-cyan-400 flex-shrink-0" />
+                    <span className="text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="bg-card border border-border rounded-xl p-8 text-center animate-scale-in" style={{ animationDelay: '600ms', animationFillMode: 'both' }}>
+            <h2 className="text-2xl font-bold text-foreground mb-2">Prêt à commencer ?</h2>
+            <p className="text-muted-foreground mb-6">Essai gratuit 24h sans engagement</p>
+
+            <a
+              href={socialLinks.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-primary/10 border border-primary text-foreground font-semibold py-3 px-8 rounded-lg hover:bg-primary/20 hover:scale-105 transition-all duration-300"
+            >
+              Découvrir nos Forfaits
+            </a>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default IPTV;

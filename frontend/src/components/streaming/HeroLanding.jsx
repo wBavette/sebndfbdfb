@@ -1,7 +1,7 @@
 import { ArrowRight, AlertTriangle, X } from "lucide-react";
 import { useState } from "react";
 import StreamCard from "./StreamCard";
-import { backupStreams, socialLinks } from "../../data/mock";
+import { backupStreams, socialLinks, logoUrl } from "../../data/mock";
 
 const HeroLanding = () => {
   const [showAlert, setShowAlert] = useState(true);
@@ -63,14 +63,19 @@ const HeroLanding = () => {
             </span>
           </div>
 
-          {/* Main Title */}
-          <h1
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-4 sm:mb-6 opacity-0 animate-fade-in font-display"
+          {/* Main Logo */}
+          <div
+            className="mb-4 sm:mb-6 opacity-0 animate-fade-in flex justify-center"
             style={{ animationDelay: "0.2s" }}
           >
-            <span className="text-foreground">meru</span>
-            <span className="text-gradient">TV</span>
-          </h1>
+            <img 
+              src={logoUrl} 
+              alt="MERU TV" 
+              className="h-24 sm:h-32 md:h-40 lg:h-48 w-auto select-none pointer-events-none" 
+              draggable="false"
+              onContextMenu={(e) => e.preventDefault()}
+            />
+          </div>
 
           {/* Subtitle */}
           <p
@@ -108,7 +113,6 @@ const HeroLanding = () => {
                 id={stream.id}
                 title={stream.title}
                 category={stream.category}
-                viewers={stream.viewers}
                 isLive={stream.isLive}
                 thumbnail={stream.thumbnail}
               />

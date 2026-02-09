@@ -1,7 +1,7 @@
-import { Eye, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const StreamCard = ({ id, title, category, thumbnail, viewers, isLive = false }) => {
+const StreamCard = ({ id, title, category, thumbnail, isLive = false }) => {
   const navigate = useNavigate();
 
   const handleClick = (e) => {
@@ -45,12 +45,6 @@ const StreamCard = ({ id, title, category, thumbnail, viewers, isLive = false })
             LIVE
           </span>
         )}
-
-        {/* Viewer count on thumbnail */}
-        <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs font-semibold text-foreground bg-background/80 backdrop-blur-sm px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-md sm:rounded-lg">
-          <Eye className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-          {viewers.toLocaleString()}
-        </div>
       </div>
 
       {/* Info */}

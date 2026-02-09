@@ -1,6 +1,6 @@
 import { Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { socialLinks } from "../../data/mock";
+import { socialLinks, logoUrl } from "../../data/mock";
 
 const Navbar = () => {
   return (
@@ -8,10 +8,13 @@ const Navbar = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center transition-all duration-300 hover:scale-105 hover:opacity-80">
-          <span className="text-2xl font-bold font-display">
-            <span className="text-foreground">meru</span>
-            <span className="text-gradient">TV</span>
-          </span>
+          <img 
+            src={logoUrl} 
+            alt="MERU TV" 
+            className="h-10 w-auto select-none pointer-events-none" 
+            draggable="false"
+            onContextMenu={(e) => e.preventDefault()}
+          />
         </Link>
 
         {/* IPTV Button & Social Icons */}

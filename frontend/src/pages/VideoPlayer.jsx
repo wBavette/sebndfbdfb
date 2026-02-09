@@ -191,9 +191,6 @@ const VideoPlayer = () => {
                 <span className="w-2 h-2 rounded-full bg-live animate-glow" />
                 <span className="text-xs font-semibold text-live">En direct</span>
               </div>
-              <span className="text-sm text-muted-foreground">
-                {stream.viewers.toLocaleString()} spectateurs
-              </span>
             </div>
             <h2 className="text-xl font-bold text-foreground mb-2">{stream.title}</h2>
             <p className="text-muted-foreground">

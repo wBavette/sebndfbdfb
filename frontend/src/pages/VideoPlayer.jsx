@@ -100,9 +100,11 @@ const VideoPlayer = () => {
         </div>
       </div>
 
-      {/* Action Buttons Bar */}
-      <div className="bg-background py-6 px-4">
-        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+      {/* Main Content - Centered */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-6 gap-8">
+        
+        {/* Action Buttons Bar - Centered */}
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           {/* ACHÈTE TON IPTV Button */}
           <Link
             to="/iptv"
@@ -138,79 +140,106 @@ const VideoPlayer = () => {
             DISCORD
           </a>
         </div>
-      </div>
 
-      {/* Video Player */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
+        {/* Stylized Video Player */}
         <div
           ref={containerRef}
-          className="w-full max-w-5xl video-player-container"
+          className="w-full max-w-5xl relative group"
         >
-          {/* Video element - using poster as placeholder since we don't have actual video */}
-          <div className="relative w-full h-full bg-card">
+          {/* Outer glow effect */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+          
+          {/* Player container */}
+          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/50">
+            {/* Video/Thumbnail */}
             <img
               src={stream.thumbnail}
               alt={stream.title}
               className="w-full h-full object-cover"
             />
 
-            {/* Play overlay */}
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+            
+            {/* Live badge */}
+            <div className="absolute top-4 left-4 flex items-center gap-2 bg-red-600/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg">
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              LIVE
+            </div>
+
+            {/* Title overlay */}
+            <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-medium">
+              {stream.title}
+            </div>
+
+            {/* Play button overlay */}
             <div
               className="absolute inset-0 flex items-center justify-center cursor-pointer"
               onClick={togglePlay}
             >
               {!isPlaying && (
-                <div className="w-20 h-20 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-2xl shadow-primary/50 transition-transform hover:scale-110">
-                  <Play className="w-10 h-10 text-primary-foreground ml-1" fill="currentColor" />
+                <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/30 border border-white/30 shadow-2xl">
+                  <Play className="w-12 h-12 text-white ml-1" fill="currentColor" />
                 </div>
               )}
             </div>
 
-            {/* Controls */}
+            {/* Controls overlay */}
             <div
-              className={`video-controls transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"}`}
+              className={`absolute bottom-0 left-0 right-0 p-4 sm:p-6 transition-all duration-300 ${showControls ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
             >
               {/* Progress bar */}
               <div
-                className="progress-bar mb-4"
+                className="w-full h-2 bg-white/20 rounded-full overflow-hidden cursor-pointer mb-4 group/progress"
                 onClick={handleProgressClick}
               >
                 <div
-                  className="progress-bar-fill"
+                  className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-100 relative"
                   style={{ width: `${progress}%` }}
-                />
+                >
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg opacity-0 group-hover/progress:opacity-100 transition-opacity" />
+                </div>
               </div>
 
               {/* Control buttons */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <button onClick={togglePlay} className="control-button">
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={togglePlay} 
+                    className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
+                  >
                     {isPlaying ? (
-                      <Pause className="w-5 h-5" />
+                      <Pause className="w-6 h-6" />
                     ) : (
-                      <Play className="w-5 h-5" />
+                      <Play className="w-6 h-6" />
                     )}
                   </button>
 
-                  <button onClick={toggleMute} className="control-button">
+                  <button 
+                    onClick={toggleMute} 
+                    className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
+                  >
                     {isMuted ? (
-                      <VolumeX className="w-5 h-5" />
+                      <VolumeX className="w-6 h-6" />
                     ) : (
-                      <Volume2 className="w-5 h-5" />
+                      <Volume2 className="w-6 h-6" />
                     )}
                   </button>
 
-                  <span className="text-xs text-muted-foreground ml-2">
+                  <span className="text-sm text-white/80 font-medium ml-2">
                     {formatTime(currentTime)} / {formatTime(duration || 0)}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button className="control-button">
-                    <Settings className="w-5 h-5" />
+                <div className="flex items-center gap-3">
+                  <button className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white">
+                    <Settings className="w-6 h-6" />
                   </button>
-                  <button onClick={toggleFullscreen} className="control-button">
-                    <Maximize className="w-5 h-5" />
+                  <button 
+                    onClick={toggleFullscreen} 
+                    className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
+                  >
+                    <Maximize className="w-6 h-6" />
                   </button>
                 </div>
               </div>

@@ -5,6 +5,7 @@ export const backupStreams = [
     category: "Sport",
     isLive: true,
     thumbnail: "https://media.ouest-france.fr/v1/pictures/MjAyNTEyZDZjZjNiYTkyZjFiNDlkZjljMmVjMDljNDZhMTU0MzI?width=1260&height=708&focuspoint=50%2C25&cropresize=1&client_id=bpeditorial&sign=98c65fbdf236cbeca6801e743bd000cff274e3deec659f6eca7e7d365349bb96",
+    streamUrl: "https://witv.team/player/playerjs/witv-player.php?id=9",
   },
   {
     id: "2",
@@ -12,6 +13,7 @@ export const backupStreams = [
     category: "Divertissement",
     isLive: true,
     thumbnail: "https://www.lequipe.fr/_medias/img-photo-jpg/-/1500000002055328/0-828-552-75/30f8a.jpg",
+    streamUrl: null,
   },
   {
     id: "3",
@@ -19,6 +21,7 @@ export const backupStreams = [
     category: "Gaming",
     isLive: true,
     thumbnail: "https://i2-prod.manchestereveningnews.co.uk/incoming/article18923807.ece/ALTERNATES/s1200/1_VILMUN.jpg",
+    streamUrl: null,
   },
   {
     id: "4",
@@ -26,6 +29,7 @@ export const backupStreams = [
     category: "Football",
     isLive: true,
     thumbnail: "https://e0.365dm.com/23/09/1600x900/skysports-real-madrid-atletico_6289241.jpg",
+    streamUrl: null,
   },
   {
     id: "5",
@@ -33,6 +37,7 @@ export const backupStreams = [
     category: "Combat",
     isLive: true,
     thumbnail: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800",
+    streamUrl: null,
   },
   {
     id: "6",
@@ -40,6 +45,7 @@ export const backupStreams = [
     category: "Sport",
     isLive: true,
     thumbnail: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800",
+    streamUrl: null,
   },
 ];
 

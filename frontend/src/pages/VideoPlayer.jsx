@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, Maximize, Settings, ArrowLeft, Zap } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, Maximize, ArrowLeft, Zap } from "lucide-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { backupStreams, socialLinks } from "../data/mock";
 
@@ -10,9 +10,6 @@ const VideoPlayer = () => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration] = useState(0);
-  const [currentTime] = useState(0);
   const [showControls, setShowControls] = useState(true);
 
   const stream = backupStreams.find(s => s.id === streamId);
@@ -50,19 +47,6 @@ const VideoPlayer = () => {
     }
   };
 
-  const handleProgressClick = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = (x / rect.width) * 100;
-    setProgress(percentage);
-  };
-
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
   if (!stream) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -78,6 +62,9 @@ const VideoPlayer = () => {
       </div>
     );
   }
+
+  // Check if stream has an external URL
+  const hasStreamUrl = stream.streamUrl && stream.streamUrl.length > 0;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -151,99 +138,96 @@ const VideoPlayer = () => {
           
           {/* Player container */}
           <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/50">
-            {/* Video/Thumbnail */}
-            <img
-              src={stream.thumbnail}
-              alt={stream.title}
-              className="w-full h-full object-cover"
-            />
-
-            {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
             
-            {/* Live badge */}
-            <div className="absolute top-4 left-4 flex items-center gap-2 bg-red-600/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              LIVE
-            </div>
+            {hasStreamUrl ? (
+              /* External Stream Player via iframe */
+              <iframe
+                src={stream.streamUrl}
+                title={stream.title}
+                className="w-full h-full"
+                frameBorder="0"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              /* Fallback: Thumbnail with controls */
+              <>
+                {/* Video/Thumbnail */}
+                <img
+                  src={stream.thumbnail}
+                  alt={stream.title}
+                  className="w-full h-full object-cover"
+                />
 
-            {/* Title overlay */}
-            <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-medium">
-              {stream.title}
-            </div>
-
-            {/* Play button overlay */}
-            <div
-              className="absolute inset-0 flex items-center justify-center cursor-pointer"
-              onClick={togglePlay}
-            >
-              {!isPlaying && (
-                <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/30 border border-white/30 shadow-2xl">
-                  <Play className="w-12 h-12 text-white ml-1" fill="currentColor" />
+                {/* Gradient overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+                
+                {/* Live badge */}
+                <div className="absolute top-4 left-4 flex items-center gap-2 bg-red-600/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg">
+                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  LIVE
                 </div>
-              )}
-            </div>
 
-            {/* Controls overlay */}
-            <div
-              className={`absolute bottom-0 left-0 right-0 p-4 sm:p-6 transition-all duration-300 ${showControls ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-            >
-              {/* Progress bar */}
-              <div
-                className="w-full h-2 bg-white/20 rounded-full overflow-hidden cursor-pointer mb-4 group/progress"
-                onClick={handleProgressClick}
-              >
+                {/* Title overlay */}
+                <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-medium">
+                  {stream.title}
+                </div>
+
+                {/* Play button overlay */}
                 <div
-                  className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full transition-all duration-100 relative"
-                  style={{ width: `${progress}%` }}
+                  className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                  onClick={togglePlay}
                 >
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg opacity-0 group-hover/progress:opacity-100 transition-opacity" />
-                </div>
-              </div>
-
-              {/* Control buttons */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <button 
-                    onClick={togglePlay} 
-                    className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-6 h-6" />
-                    ) : (
-                      <Play className="w-6 h-6" />
-                    )}
-                  </button>
-
-                  <button 
-                    onClick={toggleMute} 
-                    className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
-                  >
-                    {isMuted ? (
-                      <VolumeX className="w-6 h-6" />
-                    ) : (
-                      <Volume2 className="w-6 h-6" />
-                    )}
-                  </button>
-
-                  <span className="text-sm text-white/80 font-medium ml-2">
-                    {formatTime(currentTime)} / {formatTime(duration || 0)}
-                  </span>
+                  {!isPlaying && (
+                    <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/30 border border-white/30 shadow-2xl">
+                      <Play className="w-12 h-12 text-white ml-1" fill="currentColor" />
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <button className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white">
-                    <Settings className="w-6 h-6" />
-                  </button>
-                  <button 
-                    onClick={toggleFullscreen} 
-                    className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
-                  >
-                    <Maximize className="w-6 h-6" />
-                  </button>
+                {/* Controls overlay */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 p-4 sm:p-6 transition-all duration-300 ${showControls ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                >
+                  {/* Control buttons */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={togglePlay} 
+                        className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
+                      >
+                        {isPlaying ? (
+                          <Pause className="w-6 h-6" />
+                        ) : (
+                          <Play className="w-6 h-6" />
+                        )}
+                      </button>
+
+                      <button 
+                        onClick={toggleMute} 
+                        className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
+                      >
+                        {isMuted ? (
+                          <VolumeX className="w-6 h-6" />
+                        ) : (
+                          <Volume2 className="w-6 h-6" />
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={toggleFullscreen} 
+                        className="p-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200 text-white"
+                      >
+                        <Maximize className="w-6 h-6" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>
